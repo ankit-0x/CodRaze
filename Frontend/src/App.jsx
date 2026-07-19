@@ -1,0 +1,109 @@
+import { Routes, Route, Navigate } from "react-router";
+import Homepage from "./pages/Homepage";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import { checkAuth } from "./authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import Admin from "./pages/Admin";
+import AdminPanel from "./components/AdminPanel";
+import AdminDelete from "./components/AdminDelete";
+import ProblemPage from "./pages/ProblemPage";
+import AdminVideo from "./components/AdminVideo";
+import AdminUpload from "./components/AdminUpload";
+
+function App() {
+  // code liknna padega to check isAuthenticated
+  //if true then navigate to homepage
+  //if false then navigate to login/signup page
+
+  const { isAuthenticated, loading, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]); // or []
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? <Homepage></Homepage> : <Navigate to="/signup" />
+          }
+        ></Route>
+        <Route
+          path="/login"
+          element={isAuthenticated ? <Navigate to="/" /> : <Login></Login>}
+        ></Route>
+        <Route
+          path="/signup"
+          element={isAuthenticated ? <Navigate to="/" /> : <Signup></Signup>}
+        ></Route>
+        <Route path="/problem/:problemId" element={<ProblemPage></ProblemPage>}></Route>
+        {/* <Route path="/admin" element={<AdminPanel></AdminPanel>}></Route> */}
+        <Route
+          path="/admin"
+          element={
+            isAuthenticated && user?.role === "admin" ? (
+              <Admin />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        ></Route>
+        <Route
+          path="/admin/create"
+          element={
+            isAuthenticated && user?.role === "admin" ? (
+              <AdminPanel />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        ></Route>
+        <Route
+          path="/admin/delete"
+          element={
+            isAuthenticated && user?.role === "admin" ? (
+              <AdminDelete />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        ></Route>
+        <Route
+          path="/admin/video"
+          element={
+            isAuthenticated && user?.role === "admin" ? (
+              <AdminVideo />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        ></Route>
+        <Route
+          path="/admin/upload/:problemId"
+          element={
+            isAuthenticated && user?.role === "admin" ? (
+              <AdminUpload />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        ></Route>
+      </Routes>
+    </>
+  );
+}
+
+export default App;
