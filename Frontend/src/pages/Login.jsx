@@ -40,8 +40,15 @@ function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="card w-96 bg-base-100 shadow-xl">
-        <div className="card-body">
-          <h2 className="card-title justify-center text-3xl">CodRaze</h2>
+        <div className="card-body flex justify-center">
+           
+            <img
+              src="/CodRaze_logo.png"
+              alt="CodRaze"
+              className="max-h-30 w-auto mr-8"
+              draggable={false}
+            />
+          
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-control mt-4">
               <label className="label mb-1">
