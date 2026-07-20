@@ -14,7 +14,7 @@ const cors = require("cors");
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://cod-raze.vercel.app",
     credentials: true,
   }),
 );
