@@ -68,7 +68,7 @@ function Admin() {
               >
                 <div className="card-body items-center text-center p-6 sm:p-8 flex flex-col h-full">
                   {/* Icon */}
-                  <div className={`${option.bgColor} p-3 sm:p-4 rounded-full mb-3 sm:mb-4 flex-shrink-0`}>
+                  <div className={`${option.bgColor} p-3 sm:p-4 rounded-full mb-3 sm:mb-4 shrink-0`}>
                     <IconComponent size={32} className="text-base-content" />
                   </div>
                   
@@ -78,7 +78,7 @@ function Admin() {
                   </h2>
                   
                   {/* Description */}
-                  <p className="text-base-content/70 text-sm sm:text-base mb-6 flex-grow">
+                  <p className="text-base-content/70 text-sm sm:text-base mb-6 grow">
                     {option.description}
                   </p>
                   
