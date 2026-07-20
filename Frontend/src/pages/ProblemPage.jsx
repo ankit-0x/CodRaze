@@ -89,10 +89,7 @@ const ProblemPage = () => {
       setActiveRightTab("testcase");
     } catch (error) {
       console.error("Error running code:", error);
-      setRunResult({
-        success: false,
-        error: "Internal server error",
-      });
+      setRunResult(null);
       setLoading(false);
       setActiveRightTab("testcase");
     }
