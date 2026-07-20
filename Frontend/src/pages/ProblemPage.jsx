@@ -144,7 +144,7 @@ const ProblemPage = () => {
     }
   };
 
-  const getDifficultyColor = (difficulty) => {
+ const getDifficultyColor = (difficulty) => {
     switch (difficulty) {
       case "easy":
         return "text-green-500";
@@ -159,18 +159,18 @@ const ProblemPage = () => {
 
   if (loading && !problem) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex justify-center items-center min-h-screen bg-base-100">
         <span className="loading loading-spinner loading-lg"></span>
       </div>
     );
   }
 
   return (
-    <div className="h-screen flex bg-base-100">
+    <div className="h-screen flex flex-col lg:flex-row bg-base-100 overflow-hidden">
       {/* Left Panel */}
-      <div className="w-1/2 flex flex-col border-r border-base-300">
+      <div className="h-1/2 lg:h-full w-full lg:w-1/2 flex flex-col border-b lg:border-b-0 lg:border-r border-base-300">
         {/* Left Tabs */}
-        <div className="tabs tabs-bordered bg-base-200 px-4">
+        <div className="tabs tabs-bordered bg-base-200 px-2 sm:px-4 flex-nowrap overflow-x-auto whitespace-nowrap shrink-0 [&::-webkit-scrollbar]:hidden">
           <button
             className={`tab ${activeLeftTab === "description" ? "tab-active" : ""}`}
             onClick={() => setActiveLeftTab("description")}
@@ -195,7 +195,6 @@ const ProblemPage = () => {
           >
             Submissions
           </button>
-
           <button
             className={`tab ${activeLeftTab === "chatAI" ? "tab-active" : ""}`}
             onClick={() => setActiveLeftTab("chatAI")}
@@ -205,37 +204,43 @@ const ProblemPage = () => {
         </div>
 
         {/* Left Content */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6">
           {problem && (
             <>
               {activeLeftTab === "description" && (
                 <div>
-                  <div className="flex items-center gap-4 mb-6">
-                    <h1 className="text-2xl font-bold">{problem.title}</h1>
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-4 sm:mb-6">
+                    <h1 className="text-xl sm:text-2xl font-bold">{problem.title}</h1>
                     <div
-                      className={`badge badge-outline ${getDifficultyColor(problem.difficulty)}`}
+                      className={`badge badge-sm sm:badge-md badge-outline ${getDifficultyColor(
+                        problem.difficulty
+                      )}`}
                     >
                       {problem.difficulty.charAt(0).toUpperCase() +
                         problem.difficulty.slice(1)}
                     </div>
-                    <div className="badge badge-primary">{problem.tags}</div>
+                    <div className="badge badge-sm sm:badge-md badge-primary">
+                      {problem.tags}
+                    </div>
                   </div>
 
                   <div className="prose max-w-none">
-                    <div className="whitespace-pre-wrap text-sm leading-relaxed">
+                    <div className="whitespace-pre-wrap text-sm sm:text-base leading-relaxed">
                       {problem.description}
                     </div>
                   </div>
 
-                  <div className="mt-8">
-                    <h3 className="text-lg font-semibold mb-4">Examples:</h3>
+                  <div className="mt-6 sm:mt-8">
+                    <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
+                      Examples:
+                    </h3>
                     <div className="space-y-4">
                       {problem.visibleTestCases.map((example, index) => (
-                        <div key={index} className="bg-base-200 p-4 rounded-lg">
-                          <h4 className="font-semibold mb-2">
+                        <div key={index} className="bg-base-200 p-3 sm:p-4 rounded-lg overflow-x-auto">
+                          <h4 className="font-semibold mb-2 text-sm sm:text-base">
                             Example {index + 1}:
                           </h4>
-                          <div className="space-y-2 text-sm font-mono">
+                          <div className="space-y-2 text-xs sm:text-sm font-mono whitespace-pre-wrap">
                             <div>
                               <strong>Input:</strong> {example.input}
                             </div>
@@ -256,8 +261,8 @@ const ProblemPage = () => {
 
               {activeLeftTab === "editorial" && (
                 <div className="prose max-w-none">
-                  <h2 className="text-xl font-bold mb-4">Editorial</h2>
-                  <div className="whitespace-pre-wrap text-sm leading-relaxed">
+                  <h2 className="text-lg sm:text-xl font-bold mb-4">Editorial</h2>
+                  <div className="whitespace-pre-wrap text-sm sm:text-base leading-relaxed">
                     <Editorial
                       secureUrl={problem.secureUrl}
                       thumbnailUrl={problem.thumbnailUrl}
@@ -269,26 +274,26 @@ const ProblemPage = () => {
 
               {activeLeftTab === "solutions" && (
                 <div>
-                  <h2 className="text-xl font-bold mb-4">Solutions</h2>
+                  <h2 className="text-lg sm:text-xl font-bold mb-4">Solutions</h2>
                   <div className="space-y-6">
                     {problem.referenceSolution?.map((solution, index) => (
                       <div
                         key={index}
-                        className="border border-base-300 rounded-lg"
+                        className="border border-base-300 rounded-lg overflow-hidden"
                       >
-                        <div className="bg-base-200 px-4 py-2 rounded-t-lg">
-                          <h3 className="font-semibold">
+                        <div className="bg-base-200 px-3 sm:px-4 py-2">
+                          <h3 className="font-semibold text-sm sm:text-base">
                             {problem?.title} - {solution?.language}
                           </h3>
                         </div>
-                        <div className="p-4">
-                          <pre className="bg-base-300 p-4 rounded text-sm overflow-x-auto">
+                        <div className="p-3 sm:p-4 overflow-x-auto">
+                          <pre className="bg-base-300 p-3 sm:p-4 rounded text-xs sm:text-sm">
                             <code>{solution?.completeCode}</code>
                           </pre>
                         </div>
                       </div>
                     )) || (
-                      <p className="text-gray-500">
+                      <p className="text-gray-500 text-sm sm:text-base">
                         Solutions will be available after you solve the problem.
                       </p>
                     )}
@@ -298,8 +303,8 @@ const ProblemPage = () => {
 
               {activeLeftTab === "submissions" && (
                 <div>
-                  <h2 className="text-xl font-bold mb-4">My Submissions</h2>
-                  <div className="text-gray-500">
+                  <h2 className="text-lg sm:text-xl font-bold mb-4">My Submissions</h2>
+                  <div className="text-gray-500 overflow-x-auto">
                     <SubmissionHistory problemId={problemId} />
                   </div>
                 </div>
@@ -307,8 +312,8 @@ const ProblemPage = () => {
 
               {activeLeftTab === "chatAI" && (
                 <div className="prose max-w-none">
-                  <h2 className="text-xl font-bold mb-4">CHAT with AI</h2>
-                  <div className="whitespace-pre-wrap text-sm leading-relaxed">
+                  <h2 className="text-lg sm:text-xl font-bold mb-4">CHAT with AI</h2>
+                  <div className="whitespace-pre-wrap text-sm sm:text-base leading-relaxed h-full">
                     <ChatAi
                       problem={problem}
                       messages={messages}
@@ -323,9 +328,9 @@ const ProblemPage = () => {
       </div>
 
       {/* Right Panel */}
-      <div className="w-1/2 flex flex-col">
+      <div className="h-1/2 lg:h-full w-full lg:w-1/2 flex flex-col">
         {/* Right Tabs */}
-        <div className="tabs tabs-bordered bg-base-200 px-4">
+        <div className="tabs tabs-bordered bg-base-200 px-2 sm:px-4 flex-nowrap overflow-x-auto whitespace-nowrap shrink-0 [&::-webkit-scrollbar]:hidden">
           <button
             className={`tab ${activeRightTab === "code" ? "tab-active" : ""}`}
             onClick={() => setActiveRightTab("code")}
@@ -347,34 +352,36 @@ const ProblemPage = () => {
         </div>
 
         {/* Right Content */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col min-h-0">
           {activeRightTab === "code" && (
-            <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex flex-col min-h-0">
               {/* Language Selector */}
-              <div className="flex justify-between items-center p-4 border-b border-base-300">
-                <div className="flex gap-2">
+              <div className="flex justify-between items-center p-2 sm:p-4 border-b border-base-300">
+                <div className="flex gap-1 sm:gap-2 overflow-x-auto whitespace-nowrap shrink-0 [&::-webkit-scrollbar]:hidden w-full">
                   {["python", "c++", "java", "c", "javascript"].map((lang) => (
                     <button
                       key={lang}
-                      className={`btn btn-sm ${selectedLanguage === lang ? "btn-primary" : "btn-ghost"}`}
+                      className={`btn btn-xs sm:btn-sm shrink-0 ${
+                        selectedLanguage === lang ? "btn-primary" : "btn-ghost"
+                      }`}
                       onClick={() => handleLanguageChange(lang)}
                     >
                       {lang === "python"
                         ? "Python"
                         : lang === "c++"
-                          ? "C++"
-                          : lang === "java"
-                            ? "Java"
-                            : lang === "c"
-                              ? "C"
-                              : "JavaScript"}
+                        ? "C++"
+                        : lang === "java"
+                        ? "Java"
+                        : lang === "c"
+                        ? "C"
+                        : "JavaScript"}
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* Monaco Editor */}
-              <div className="flex-1">
+              <div className="flex-1 min-h-0 relative">
                 <Editor
                   height="100%"
                   language={getLanguageForMonaco(selectedLanguage)}
@@ -406,7 +413,7 @@ const ProblemPage = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="p-4 border-t border-base-300 flex justify-between">
+              <div className="p-2 sm:p-4 border-t border-base-300 flex justify-between shrink-0">
                 <div className="flex gap-2">
                   <button
                     className="btn btn-ghost btn-sm"
@@ -417,14 +424,18 @@ const ProblemPage = () => {
                 </div>
                 <div className="flex gap-2">
                   <button
-                    className={`btn btn-outline btn-sm ${loading ? "loading" : ""}`}
+                    className={`btn btn-outline btn-sm ${
+                      loading ? "loading" : ""
+                    }`}
                     onClick={handleRun}
                     disabled={loading}
                   >
                     Run
                   </button>
                   <button
-                    className={`btn btn-primary btn-sm ${loading ? "loading" : ""}`}
+                    className={`btn btn-primary btn-sm ${
+                      loading ? "loading" : ""
+                    }`}
                     onClick={handleSubmitCode}
                     disabled={loading}
                   >
@@ -436,30 +447,30 @@ const ProblemPage = () => {
           )}
 
           {activeRightTab === "testcase" && (
-            <div className="flex-1 p-4 overflow-y-auto">
-              <h3 className="font-semibold mb-4">Test Results</h3>
+            <div className="flex-1 p-3 sm:p-4 overflow-y-auto">
+              <h3 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Test Results</h3>
               {runResult ? (
                 <div
-                  className={`alert ${runResult.success ? "alert-success" : "alert-error"} mb-4`}
+                  className={`alert ${
+                    runResult.success ? "alert-success" : "alert-error"
+                  } mb-4 text-xs sm:text-sm p-3 sm:p-4`}
                 >
-                  <div>
+                  <div className="w-full">
                     {runResult.success ? (
                       <div>
-                        <h4 className="font-bold">✅ All test cases passed!</h4>
-                        <p className="text-sm mt-2">
+                        <h4 className="font-bold text-sm sm:text-base">✅ All test cases passed!</h4>
+                        <p className="mt-2">
                           Runtime: {runResult.runtime + " sec"}
                         </p>
-                        <p className="text-sm">
-                          Memory: {runResult.memory + " KB"}
-                        </p>
+                        <p>Memory: {runResult.memory + " KB"}</p>
 
                         <div className="mt-4 space-y-2">
                           {runResult.testCases.map((tc, i) => (
                             <div
                               key={i}
-                              className="bg-base-100 p-3 rounded text-xs"
+                              className="bg-base-100 p-3 rounded overflow-x-auto"
                             >
-                              <div className="font-mono">
+                              <div className="font-mono whitespace-pre-wrap">
                                 <div>
                                   <strong>Input:</strong> {tc.stdin}
                                 </div>
@@ -470,7 +481,7 @@ const ProblemPage = () => {
                                 <div>
                                   <strong>Output:</strong> {tc.stdout}
                                 </div>
-                                <div className={"text-green-600"}>
+                                <div className="text-green-600 mt-1 font-semibold">
                                   {"✓ Passed"}
                                 </div>
                               </div>
@@ -480,14 +491,14 @@ const ProblemPage = () => {
                       </div>
                     ) : (
                       <div>
-                        <h4 className="font-bold">❌ Error</h4>
+                        <h4 className="font-bold text-sm sm:text-base">❌ Error</h4>
                         <div className="mt-4 space-y-2">
                           {runResult.testCases.map((tc, i) => (
                             <div
                               key={i}
-                              className="bg-base-100 p-3 rounded text-xs"
+                              className="bg-base-100 p-3 rounded overflow-x-auto"
                             >
-                              <div className="font-mono">
+                              <div className="font-mono whitespace-pre-wrap">
                                 <div>
                                   <strong>Input:</strong> {tc.stdin}
                                 </div>
@@ -499,11 +510,11 @@ const ProblemPage = () => {
                                   <strong>Output:</strong> {tc.stdout}
                                 </div>
                                 <div
-                                  className={
+                                  className={`mt-1 font-semibold ${
                                     tc.status_id == 3
                                       ? "text-green-600"
                                       : "text-red-600"
-                                  }
+                                  }`}
                                 >
                                   {tc.status_id == 3 ? "✓ Passed" : "✗ Failed"}
                                 </div>
@@ -516,7 +527,7 @@ const ProblemPage = () => {
                   </div>
                 </div>
               ) : (
-                <div className="text-gray-500">
+                <div className="text-gray-500 text-sm sm:text-base">
                   Click "Run" to test your code with the example test cases.
                 </div>
               )}
@@ -524,17 +535,19 @@ const ProblemPage = () => {
           )}
 
           {activeRightTab === "result" && (
-            <div className="flex-1 p-4 overflow-y-auto">
-              <h3 className="font-semibold mb-4">Submission Result</h3>
+            <div className="flex-1 p-3 sm:p-4 overflow-y-auto">
+              <h3 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Submission Result</h3>
               {submitResult ? (
                 <div
-                  className={`alert ${submitResult.accepted ? "alert-success" : "alert-error"}`}
+                  className={`alert ${
+                    submitResult.accepted ? "alert-success" : "alert-error"
+                  } p-3 sm:p-4 text-xs sm:text-sm`}
                 >
-                  <div>
+                  <div className="w-full">
                     {submitResult.accepted ? (
                       <div>
-                        <h4 className="font-bold text-lg">🎉 Accepted</h4>
-                        <div className="mt-4 space-y-2">
+                        <h4 className="font-bold text-base sm:text-lg">🎉 Accepted</h4>
+                        <div className="mt-3 sm:mt-4 space-y-1 sm:space-y-2">
                           <p>
                             Test Cases Passed: {submitResult.passedTestCases}/
                             {submitResult.totalTestCases}
@@ -545,10 +558,10 @@ const ProblemPage = () => {
                       </div>
                     ) : (
                       <div>
-                        <h4 className="font-bold text-lg">
+                        <h4 className="font-bold text-base sm:text-lg">
                           ❌ {submitResult.error}
                         </h4>
-                        <div className="mt-4 space-y-2">
+                        <div className="mt-3 sm:mt-4 space-y-1 sm:space-y-2">
                           <p>
                             Test Cases Passed: {submitResult.passedTestCases}/
                             {submitResult.totalTestCases}
@@ -559,7 +572,7 @@ const ProblemPage = () => {
                   </div>
                 </div>
               ) : (
-                <div className="text-gray-500">
+                <div className="text-gray-500 text-sm sm:text-base">
                   Click "Submit" to submit your solution for evaluation.
                 </div>
               )}
@@ -569,6 +582,6 @@ const ProblemPage = () => {
       </div>
     </div>
   );
-};
+}
 
 export default ProblemPage;

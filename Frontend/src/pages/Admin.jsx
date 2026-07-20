@@ -46,52 +46,50 @@ function Admin() {
 
   return (
     <div className="min-h-screen bg-base-200">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-base-content mb-4">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl font-bold text-base-content mb-3 sm:mb-4">
             Admin Panel
           </h1>
-          <p className="text-base-content/70 text-lg">
+          <p className="text-base-content/70 text-sm sm:text-lg px-2">
             Manage coding problems on your platform
           </p>
         </div>
 
         {/* Admin Options Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8 max-w-6xl mx-auto">
           {adminOptions.map((option) => {
             const IconComponent = option.icon;
             return (
               <div
                 key={option.id}
-                className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+                className="card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 sm:hover:-translate-y-2 cursor-pointer border border-base-300 flex flex-col"
               >
-                <div className="card-body items-center text-center p-8">
+                <div className="card-body items-center text-center p-6 sm:p-8 flex flex-col h-full">
                   {/* Icon */}
-                  <div className={`${option.bgColor} p-4 rounded-full mb-4`}>
+                  <div className={`${option.bgColor} p-3 sm:p-4 rounded-full mb-3 sm:mb-4 flex-shrink-0`}>
                     <IconComponent size={32} className="text-base-content" />
                   </div>
                   
                   {/* Title */}
-                  <h2 className="card-title text-xl mb-2">
+                  <h2 className="card-title text-lg sm:text-xl mb-2">
                     {option.title}
                   </h2>
                   
                   {/* Description */}
-                  <p className="text-base-content/70 mb-6">
+                  <p className="text-base-content/70 text-sm sm:text-base mb-6 flex-grow">
                     {option.description}
                   </p>
                   
                   {/* Action Button */}
-                  <div className="card-actions">
-                    <div className="card-actions">
+                  <div className="card-actions w-full justify-center mt-auto">
                     <NavLink 
-                    to={option.route}
-                   className={`btn ${option.color} btn-wide`}
-                   >
-                   {option.title}
-                   </NavLink>
-                   </div>
+                      to={option.route}
+                      className={`btn ${option.color} w-full sm:w-auto sm:btn-wide`}
+                    >
+                      {option.title}
+                    </NavLink>
                   </div>
                 </div>
               </div>

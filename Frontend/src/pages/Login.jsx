@@ -38,42 +38,50 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="card w-96 bg-base-100 shadow-xl">
-        <div className="card-body flex justify-center">
-           
+    <div className="min-h-screen flex items-center justify-center p-4 sm:p-8 bg-base-200">
+      <div className="card w-full max-w-sm sm:max-w-md bg-base-100 shadow-xl border border-base-300">
+        <div className="card-body p-6 sm:p-8">
+          
+          {/* Logo Container */}
+          <div className="flex justify-center mb-4 sm:mb-6">
             <img
               src="/CodRaze_logo.png"
               alt="CodRaze"
-              className="max-h-30 w-auto mr-8"
+              className="h-16 sm:h-20 w-auto"
               draggable={false}
             />
+          </div>
           
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="form-control mt-4">
-              <label className="label mb-1">
-                <span className="label-text">Email</span>
+            {/* Email Field */}
+            <div className="form-control">
+              <label className="label mb-1 px-1">
+                <span className="label-text text-sm sm:text-base font-medium">Email</span>
               </label>
               <input
                 type="email"
                 placeholder="john@example.com"
-                className={`input input-bordered ${errors.emailId && "input-error"}`}
+                className={`input input-bordered w-full ${errors.emailId ? "input-error" : ""}`}
                 {...register("emailId")}
               />
               {errors.emailId && (
-                <span className="text-error">{errors.emailId.message}</span>
+                <span className="text-error text-xs sm:text-sm mt-1 px-1">
+                  {errors.emailId.message}
+                </span>
               )}
             </div>
+
+            {/* Password Field */}
             <div className="form-control mt-4">
-              <label className="label mb-1">
-                <span className="label-text">Password</span>
+              <label className="label mb-1 px-1">
+                <span className="label-text text-sm sm:text-base font-medium">Password</span>
               </label>
 
-              <div className="relative">
+              <div className="relative w-full">
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="********"
-                  className={`input input-bordered ${
+                  className={`input input-bordered w-full pr-12 ${
                     errors.password ? "input-error" : ""
                   }`}
                   {...register("password")}
@@ -81,16 +89,15 @@ function Login() {
 
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-6 flex items-center text-gray-500 hover:text-gray-700"
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-primary transition-colors"
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
                     // Eye Off Icon
-                    // Eye Off Icon
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
+                      className="h-5 w-5 sm:h-6 sm:w-6"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -118,7 +125,7 @@ function Login() {
                     // Eye Icon
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
+                      className="h-5 w-5 sm:h-6 sm:w-6"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -141,24 +148,29 @@ function Login() {
               </div>
 
               {errors.password && (
-                <span className="text-error">{errors.password.message}</span>
+                <span className="text-error text-xs sm:text-sm mt-1 px-1">
+                  {errors.password.message}
+                </span>
               )}
             </div>
-            <div className="form-control mt-6 flex justify-center">
+
+            {/* Submit Button */}
+            <div className="form-control mt-6">
               <button
                 type="submit"
-                className={`btn btn-primary ${loading ? "loading" : ""}`}
+                className={`btn btn-primary w-full ${loading ? "loading" : ""}`}
                 disabled={loading}
               >
                 {loading ? "Logging In..." : "Log In"}
               </button>
             </div>
           </form>
+
           {/* SignUp Redirect */}
           <div className="text-center mt-6">
-            <span className="text-sm">
+            <span className="text-sm sm:text-base text-base-content/80">
               Don't have an account?{" "}
-              <NavLink to="/signup" className="link link-primary">
+              <NavLink to="/signup" className="link link-primary font-semibold hover:text-primary-focus transition-colors">
                 Sign Up
               </NavLink>
             </span>
