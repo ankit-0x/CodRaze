@@ -94,7 +94,12 @@ const logout = async (req, res) => {
     await redisClient.set(`token:${token}`, "Blocked");
     await redisClient.expireAt(`token:${token}`, payload.exp);
     // Cookies ko clear kar dena .....
-    res.cookie("token", null, { expires: new Date(Date.now()) });
+    res.cookie("token", null, {  
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      expires: new Date(Date.now())
+    });
     res.send("Logged Out Successfully");
   } catch (err) {
     res.status(503).json({

@@ -291,11 +291,13 @@ export default function AdminPanel() {
                   </div>
                 )}
 
+                {/* Inside visibleFields.map */}
                 <div className="form-control pt-4">
-                  <input
+                  <textarea
                     {...register(`visibleTestCases.${index}.input`)}
-                    placeholder="Input"
-                    className="input input-bordered w-full"
+                    placeholder="Input (Use new lines for multiple inputs)"
+                    className="textarea textarea-bordered w-full font-mono"
+                    rows={3}
                   />
                   {errors.visibleTestCases?.[index]?.input && (
                     <span className="text-error text-sm mt-1">
@@ -303,11 +305,13 @@ export default function AdminPanel() {
                     </span>
                   )}
                 </div>
+
                 <div className="form-control">
-                  <input
+                  <textarea
                     {...register(`visibleTestCases.${index}.output`)}
-                    placeholder="Output"
-                    className="input input-bordered w-full"
+                    placeholder="Expected Output (Use new lines if output has multiple lines)"
+                    className="textarea textarea-bordered w-full font-mono"
+                    rows={3}
                   />
                   {errors.visibleTestCases?.[index]?.output && (
                     <span className="text-error text-sm mt-1">
@@ -321,6 +325,7 @@ export default function AdminPanel() {
                     placeholder="Explanation"
                     className="textarea textarea-bordered w-full"
                   />
+
                   {errors.visibleTestCases?.[index]?.explanation && (
                     <span className="text-error text-sm mt-1">
                       {errors.visibleTestCases[index].explanation.message}
@@ -367,11 +372,13 @@ export default function AdminPanel() {
                   </div>
                 )}
 
+                {/* Inside hiddenFields.map */}
                 <div className="form-control pt-4">
-                  <input
+                  <textarea
                     {...register(`hiddenTestCases.${index}.input`)}
-                    placeholder="Input"
-                    className="input input-bordered w-full"
+                    placeholder="Input (Use new lines for multiple inputs)"
+                    className="textarea textarea-bordered w-full font-mono"
+                    rows={3}
                   />
                   {errors.hiddenTestCases?.[index]?.input && (
                     <span className="text-error text-sm mt-1">
@@ -379,11 +386,13 @@ export default function AdminPanel() {
                     </span>
                   )}
                 </div>
+
                 <div className="form-control">
-                  <input
+                  <textarea
                     {...register(`hiddenTestCases.${index}.output`)}
-                    placeholder="Output"
-                    className="input input-bordered w-full"
+                    placeholder="Expected Output"
+                    className="textarea textarea-bordered w-full font-mono"
+                    rows={3}
                   />
                   {errors.hiddenTestCases?.[index]?.output && (
                     <span className="text-error text-sm mt-1">
@@ -403,12 +412,12 @@ export default function AdminPanel() {
           <div className="space-y-6">
             {/* Fixed Map Array to use Objects to avoid toLowerCase ReferenceError */}
             {[
-  { label: "Python", value: "python" },
-  { label: "C++", value: "c++" },
-  { label: "Java", value: "java" },
-  { label: "C", value: "c" },
-  { label: "JavaScript", value: "javascript" },
-].map((lang, index) => (
+              { label: "Python", value: "python" },
+              { label: "C++", value: "c++" },
+              { label: "Java", value: "java" },
+              { label: "C", value: "c" },
+              { label: "JavaScript", value: "javascript" },
+            ].map((lang, index) => (
               <div key={lang.value} className="space-y-2">
                 <h3 className="font-medium text-lg">{lang.label}</h3>
 
