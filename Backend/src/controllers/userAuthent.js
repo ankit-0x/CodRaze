@@ -3,7 +3,7 @@ const validate = require("../utils/validate");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const redisClient = require("../config/redis");
-const Submission = require('../models/submission');
+const Submission = require("../models/submission");
 
 const register = async (req, res) => {
   try {
@@ -13,11 +13,11 @@ const register = async (req, res) => {
     const { firstName, emailId, password } = req.body;
 
     req.body.password = await bcrypt.hash(password, 10);
-    req.body.role = 'user';
+    req.body.role = "user";
 
     const user = await User.create(req.body);
     const token = jwt.sign(
-      { _id: user._id, emailId: emailId, role:'user' },
+      { _id: user._id, emailId: emailId, role: "user" },
       process.env.JWT_SECRET_KEY,
       { expiresIn: 60 * 60 },
     );
@@ -26,18 +26,23 @@ const register = async (req, res) => {
       firstName: user.firstName,
       emailId: user.emailId,
       _id: user._id,
-      role: user.role
-    }
+      role: user.role,
+    };
 
-    res.cookie("token", token, { maxAge: 60 * 60 * 1000 });
-   res.status(201).json({
-      user:reply,
-      message:"User Registered Successfully"
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 60 * 60 * 1000,
+    });
+    res.status(201).json({
+      user: reply,
+      message: "User Registered Successfully",
     });
   } catch (err) {
     res.status(400).json({
-    message: err.message,
-  });
+      message: err.message,
+    });
   }
 };
 
@@ -52,7 +57,7 @@ const login = async (req, res) => {
 
     if (!match) throw new Error("Invalid Credentials");
     const token = jwt.sign(
-      { _id: user._id, emailId:emailId, role:user.role },
+      { _id: user._id, emailId: emailId, role: user.role },
       process.env.JWT_SECRET_KEY,
       { expiresIn: 60 * 60 },
     );
@@ -61,40 +66,44 @@ const login = async (req, res) => {
       firstName: user.firstName,
       emailId: user.emailId,
       _id: user._id,
-      role: user.role
-    }
+      role: user.role,
+    };
 
-    res.cookie("token", token, { maxAge: 60 * 60 * 1000 });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 60 * 60 * 1000,
+    });
     res.status(200).json({
-      user:reply,
-      message:"Login Successfully"
+      user: reply,
+      message: "Login Successfully",
     });
   } catch (err) {
     res.status(401).json({
-    message: err.message,
-  });
+      message: err.message,
+    });
   }
 };
 
-const logout = async (req, res)=>{
-    try{
-          const {token} = req.cookies;
-          // Token add kar denge redis ke blocklist mei
-          const payload = jwt.decode(token);
-          await redisClient.set(`token:${token}`,'Blocked');
-          await redisClient.expireAt(`token:${token}`,payload.exp);
-          // Cookies ko clear kar dena .....
-          res.cookie('token',null,{expires: new Date(Date.now())});
-          res.send("Logged Out Successfully");
-    }
-    catch(err){
-        res.status(503).json({
-    message: err.message,
-  });
-    }
-}
+const logout = async (req, res) => {
+  try {
+    const { token } = req.cookies;
+    // Token add kar denge redis ke blocklist mei
+    const payload = jwt.decode(token);
+    await redisClient.set(`token:${token}`, "Blocked");
+    await redisClient.expireAt(`token:${token}`, payload.exp);
+    // Cookies ko clear kar dena .....
+    res.cookie("token", null, { expires: new Date(Date.now()) });
+    res.send("Logged Out Successfully");
+  } catch (err) {
+    res.status(503).json({
+      message: err.message,
+    });
+  }
+};
 
-const adminRegister = async (req,res)=>{
+const adminRegister = async (req, res) => {
   try {
     //validate the data
     validate(req.body);
@@ -102,26 +111,30 @@ const adminRegister = async (req,res)=>{
     const { firstName, emailId, password } = req.body;
 
     req.body.password = await bcrypt.hash(password, 10);
-    
 
     const user = await User.create(req.body);
     const token = jwt.sign(
-      { _id: user._id, emailId: emailId, role:user.role },
+      { _id: user._id, emailId: emailId, role: user.role },
       process.env.JWT_SECRET_KEY,
       { expiresIn: 60 * 60 },
     );
 
-    res.cookie("token", token, { maxAge: 60 * 60 * 1000 });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 60 * 60 * 1000,
+    });
     res.status(201).send("Admin Registered Successfully");
   } catch (err) {
     res.status(400).json({
-    message: err.message,
-  });
+      message: err.message,
+    });
   }
-}
+};
 
-const deleteProfile = async (req,res) =>{
-  try{
+const deleteProfile = async (req, res) => {
+  try {
     const userId = req.result._id;
     // userSchema Delete
     await User.findByIdAndDelete(userId);
@@ -129,10 +142,9 @@ const deleteProfile = async (req,res) =>{
     // await Submission.deleteMany({userId});
 
     res.status(200).send("Deleted Successfully");
+  } catch (err) {
+    res.status(500).send("Internal Server Error");
   }
-  catch(err){
-    res.status(500).send("Internal Server Error")
-  }
-}
+};
 
-module.exports = {register,login, logout, adminRegister, deleteProfile};
+module.exports = { register, login, logout, adminRegister, deleteProfile };
