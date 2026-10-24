@@ -23,7 +23,7 @@ app.use(
 
 app.use(express.json());
 
-app.get("/health", (req, res) => {
+app.get("/", (req, res) => {
   res.send("Backend is successfully running");
 });
 app.use("/user", authRouter);
