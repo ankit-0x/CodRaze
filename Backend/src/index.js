@@ -23,6 +23,9 @@ app.use(
 
 app.use(express.json());
 
+app.get("/health", (req, res) => {
+  res.send("Backend is successfully running");
+});
 app.use("/user", authRouter);
 app.use("/problem", problemRouter);
 app.use("/submission", submitRouter);
